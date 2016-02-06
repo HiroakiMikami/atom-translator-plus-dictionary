@@ -1,0 +1,17 @@
+{
+  "name": "translator-plus-dictionary",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [
+  ],
+  "activationCommands": {
+  },
+  "repository": "https://github.com/atom/translator-plus-dictionary",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
