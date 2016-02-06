@@ -11,6 +11,7 @@ class MicrosoftTranslatorClient
   @grantType: 'client_credentials'
 
   accessTokenRequestOptions = null
+  accessToken = null
 
   constructor: (clientId, clientSecret) ->
     # Initialize the modules
@@ -29,17 +30,31 @@ class MicrosoftTranslatorClient
 
   translate: (text, from, to, onSucceeded, onFailed) ->
     new Promise((resolve, reject) =>
-      # Get an access token
-      request.post(@accessTokenRequestOptions, (error, response, body) =>
-        if !error? || 200 <= response.statusCode < 400
-          resolve(body.access_token)
-        else
-          reject({
-            message: "Cannot obtain an access token"
-            statusCode: response.statusCode
-            err: error
-          })
-      )
+      # Check whether the previous access token is valid
+      currentTime = new Date().getTime()
+      if @accessToken? && @accessToken.expired > currentTime
+        # Valid
+        resolve(@accessToken.token)
+      else
+        console.log("access token", @accessToken)
+        requestedTime = new Date().getTime()
+        # Invalid, get an access token via API
+        request.post(@accessTokenRequestOptions, (error, response, body) =>
+          if !error? || 200 <= response.statusCode < 400
+            # Update the access token
+            if body.expires_in?
+              @accessToken = {
+                token: body.access_token
+                expired: requestedTime + body.expires_in * 1000 # sec -> msec
+              }
+            resolve(body.access_token)
+          else
+            reject({
+              message: "Cannot obtain an access token"
+              statusCode: response.statusCode
+              err: error
+            })
+        )
     ).then(
       (token) =>
         # Translate via Microft Translator API
