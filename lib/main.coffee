@@ -24,26 +24,26 @@ module.exports = TranslatorPlusDictionary =
     editor = atom.workspace.getActiveTextEditor()
     return unless editor?
 
-    texts = []
+    targets = []
 
     # Get texts from selected texts
     for range in editor.getSelectedBufferRanges()
       if (range.start.row == range.end.row) && (range.start.column == range.end.column)
         continue
       text = editor.getTextInRange(range)
-      texts.push({
+      targets.push({
         range: range
         text: text
       })
 
-    if texts.length == 0
+    if targets.length == 0
       # Get words from cursor positions if no text are selected
       for cursor in editor.getCursors()
         beginWord = cursor.getBeginningOfCurrentWordBufferPosition()
         endWord = cursor.getEndOfCurrentWordBufferPosition()
         range = new Range(beginWord, endWord)
 
-        texts.push({
+        targets.push({
           range: range
           text: editor.getTextInRange(range)
         })
