@@ -36,7 +36,6 @@ class MicrosoftTranslatorClient
         # Valid
         resolve(@accessToken.token)
       else
-        console.log("access token", @accessToken)
         requestedTime = new Date().getTime()
         # Invalid, get an access token via API
         request.post(@accessTokenRequestOptions, (error, response, body) =>
