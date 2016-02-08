@@ -28,7 +28,7 @@ class MicrosoftTranslatorClient
         grant_type: MicrosoftTranslatorClient.grantType
       json: true
 
-  translate: (text, from, to, onSucceeded, onFailed) ->
+  translate: (text, from, to, succeeded, failed) ->
     new Promise((resolve, reject) =>
       # Check whether the previous access token is valid
       currentTime = new Date().getTime()
@@ -100,10 +100,10 @@ class MicrosoftTranslatorClient
       (error) => error
     ).then(
       (result) =>
-        onSucceeded(result)
+        succeeded(result)
         return
       ,
       (error) =>
-        onFailed(error)
+        failed(error)
         return
     )
