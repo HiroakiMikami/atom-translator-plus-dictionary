@@ -2,6 +2,7 @@ CompositeDisposable = null
 Language = null
 Range = null
 franc = null
+NotificationView = null
 
 module.exports = TranslatorPlusDictionary =
   subscriptions: null
@@ -9,6 +10,8 @@ module.exports = TranslatorPlusDictionary =
   francOptions: null
   primaryLanguage: null
   secondaryLanguage: null
+
+  notificationView: null
 
   config:
     languages:
@@ -31,6 +34,7 @@ module.exports = TranslatorPlusDictionary =
     CompositeDisposable ?= require('atom').CompositeDisposable
     Range ?= require('atom').Range
     franc ?= require('franc')
+    NotificationView = require('./notification-view')
 
     # Initialize fields
     @subscriptions = new CompositeDisposable
@@ -52,13 +56,19 @@ module.exports = TranslatorPlusDictionary =
     @primaryLanguage = Language.getFromCode(atom.config.get("translator-plus-dictionary.primaryLanguage"))
     @secondaryLanguage = Language.getFromCode(atom.config.get("translator-plus-dictionary.secondaryLanguage"))
 
+    @notificationView = new NotificationView()
+
     # Register the commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:translate': => @translate()
 
-  consumeStatusBar: () ->
+  consumeStatusBar: (statusBar) ->
+    # Add a tile to the status bar
+    @statusBarTile = statusBar.addLeftTile(item: @notificationView.statusBar, priority: 100)
 
   deactivate: ->
     @subscriptions.dispose()
+    @statusBarTile?.destroy()
+    @notificationView.destroy()
 
   serialize: ->
 

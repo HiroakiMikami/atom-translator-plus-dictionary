@@ -3,6 +3,13 @@
   "main": "./lib/main",
   "version": "0.0.0",
   "description": "",
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  },
   "keywords": [
   ],
   "activationCommands": {
