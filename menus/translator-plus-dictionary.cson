@@ -16,6 +16,10 @@
           'label': 'Translate'
           'command': 'translator-plus-dictionary:translate'
         }
+        {
+          'label': 'Close All Translate Views'
+          'command': 'translator-plus-dictionary:close-all'
+        }
       ]
     ]
   }

@@ -18,6 +18,8 @@ module.exports = TranslatorPlusDictionary =
   translatorPlusDictionary: null
   notificationView: null
 
+  views: null
+
   config:
     microsoftTranslatorClientId:
       title: 'Client ID of Microsoft Translator API'
@@ -54,6 +56,7 @@ module.exports = TranslatorPlusDictionary =
 
     # Initialize fields
     @subscriptions = new CompositeDisposable
+    @views = []
     languageCodes = atom.config.get("translator-plus-dictionary.languages").split(/,\s*/)
     @languages = []
     @francOptions = {
@@ -88,17 +91,29 @@ module.exports = TranslatorPlusDictionary =
 
     # Register the commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:translate': => @translate()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:close-all': => @closeAll()
 
   consumeStatusBar: (statusBar) ->
     # Add a tile to the status bar
     @statusBarTile = statusBar.addLeftTile(item: @notificationView.statusBar, priority: 100)
 
   deactivate: ->
+    for view in @views
+      view.destroy()
     @subscriptions.dispose()
     @statusBarTile?.destroy()
     @notificationView.destroy()
 
   serialize: ->
+
+  closeView: (view) ->
+    for i in [0...@views.length]
+      if @views[i] == view then @views.slice(i, 1)
+    view.destroy()
+  closeAll: ->
+    for v in @views
+      v.destroy()
+    @views = []
 
   translate: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -146,4 +161,5 @@ module.exports = TranslatorPlusDictionary =
         @languages,
         @translatorPlusDictionary
       )
-      view.onClosed( -> view.destroy())
+      @views.push(view)
+      view.onClosed( => @closeView(view))
