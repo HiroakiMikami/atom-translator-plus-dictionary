@@ -1,0 +1,57 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+atom-overlay.translator-plus-dictionary-view {
+  .popover-list {
+    max-height: 400px;
+    max-width: 800px;
+    min-width: 400px;
+  }
+
+  div.menu {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    display: table-row;
+
+    div.language {
+      display: table-cell;
+      padding-left: @component-padding;
+      padding-right: @component-padding;
+    }
+    span.arrow:before {
+      display: table-cell;
+      font-size: @font-size * 2;
+      -web-kit-font-smoothing: antialiased;
+      content:"\f03e";
+      font-family: 'Octicons Regular';
+    }
+
+  }
+  a.close-icon:before {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: block;
+    font-size: @font-size;
+    width: @font-size;
+    height: @font-size;
+    -web-kit-font-smoothing: antialiased;
+    content:"\f081";
+    font-family: 'Octicons Regular';
+    transform: scale(0, 0);
+    padding-right: @component-padding;
+  }
+  &:hover {
+    .close-icon:before {
+      transform: scale(1, 1);
+    }
+  }
+  .content {
+    width: 100%;
+    overflow: scroll;
+  }
+}
