@@ -3,6 +3,9 @@ Language = null
 Range = null
 franc = null
 NotificationView = null
+MicrosoftTranslatorClient = null
+TranslatorPlusDictionary = null
+TranslatorPlusDictionaryView = null
 
 module.exports = TranslatorPlusDictionary =
   subscriptions: null
@@ -11,9 +14,19 @@ module.exports = TranslatorPlusDictionary =
   primaryLanguage: null
   secondaryLanguage: null
 
+  microsoftTranslatorClient: null
+  translatorPlusDictionary: null
   notificationView: null
 
   config:
+    microsoftTranslatorClientId:
+      title: 'Client ID of Microsoft Translator API'
+      type: 'string'
+      default: ''
+    microsoftTranslatorClientSecret:
+      title: 'Client Secret of Microsoft Translator API'
+      type: 'string'
+      default: ''
     languages:
       title: "Languages used in this package"
       description: "https://github.com/wooorm/franc/blob/master/Supported-Languages.md is a list of languages names. Languages are separated by comma(,)."
@@ -35,6 +48,9 @@ module.exports = TranslatorPlusDictionary =
     Range ?= require('atom').Range
     franc ?= require('franc')
     NotificationView = require('./notification-view')
+    MicrosoftTranslatorClient = require('./microsoft-translator-client')
+    TranslatorPlusDictionaryView = require('./translator-plus-dictionary-view')
+    TranslatorPlusDictionary = require('./translator-plus-dictionary')
 
     # Initialize fields
     @subscriptions = new CompositeDisposable
@@ -57,6 +73,18 @@ module.exports = TranslatorPlusDictionary =
     @secondaryLanguage = Language.getFromCode(atom.config.get("translator-plus-dictionary.secondaryLanguage"))
 
     @notificationView = new NotificationView()
+
+    @translatorPlusDictionary = new TranslatorPlusDictionary()
+    # Add Microsoft Translator
+    microsoftTranslatorClientId = atom.config.get("translator-plus-dictionary.microsoftTranslatorClientId")
+    microsoftTranslatorClientSecret = atom.config.get("translator-plus-dictionary.microsoftTranslatorClientSecret")
+    microsoftTranslatorClient = new MicrosoftTranslatorClient(microsoftTranslatorClientId, microsoftTranslatorClientSecret)
+    @translatorPlusDictionary.translators.push(microsoftTranslatorClient)
+
+    # Wire all components
+    @translatorPlusDictionary.onStarted(@notificationView.started)
+    @translatorPlusDictionary.onFinished(@notificationView.finished)
+    @translatorPlusDictionary.onFailed(@notificationView.failed)
 
     # Register the commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:translate': => @translate()
@@ -111,3 +139,11 @@ module.exports = TranslatorPlusDictionary =
         target.to = @secondaryLanguage
       else
         target.to = @primaryLanguage
+
+      view = new TranslatorPlusDictionaryView(
+        editor,
+        target,
+        @languages,
+        @translatorPlusDictionary
+      )
+      view.onClosed( -> view.destroy())

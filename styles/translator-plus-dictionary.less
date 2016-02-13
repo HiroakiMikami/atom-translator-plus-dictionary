@@ -50,8 +50,22 @@ atom-overlay.translator-plus-dictionary-view {
       transform: scale(1, 1);
     }
   }
-  .content {
+  div.content {
     width: 100%;
     overflow: scroll;
+    padding-top: @component-padding;
+
+    div.result {
+      padding-left: @component-padding;
+      padding-right: @component-padding;
+      div.name {
+        text-decoration: underline;
+        font-weight: bold;
+      }
+      div.data {
+        width: 100%;
+        padding-bottom: @component-padding;
+      }
+    }
   }
 }
