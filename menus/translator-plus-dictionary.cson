@@ -1,0 +1,26 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Translate a text'
+      'command': 'translator-plus-dictionary:translate'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'translator-plus-dictionary'
+      'submenu': [
+        {
+          'label': 'Translate'
+          'command': 'translator-plus-dictionary:translate'
+        }
+        {
+          'label': 'Close All Translate Views'
+          'command': 'translator-plus-dictionary:close-all'
+        }
+      ]
+    ]
+  }
+]
