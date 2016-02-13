@@ -3,7 +3,6 @@ Language = null
 Range = null
 franc = null
 NotificationView = null
-MicrosoftTranslatorClient = null
 TranslatorPlusDictionary = null
 TranslatorPlusDictionaryView = null
 ExternalApis = null
@@ -15,7 +14,6 @@ module.exports = TranslatorPlusDictionary =
   primaryLanguage: null
   secondaryLanguage: null
 
-  microsoftTranslatorClient: null
   translatorPlusDictionary: null
   notificationView: null
 
