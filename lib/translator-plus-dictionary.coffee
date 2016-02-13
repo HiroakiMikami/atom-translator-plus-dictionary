@@ -31,8 +31,8 @@ class TranslatorPlusDictionary
           (result) ->
             succeeded(kind, result)
         )(kind),
-        ((kind) ->
-          (error) ->
+        ((kind) =>
+          (error) =>
             @emitter.emit("Failed", {
               kind: kind
               error: error
@@ -51,8 +51,8 @@ class TranslatorPlusDictionary
           (result) ->
             succeeded(kind, result)
         )(kind),
-        ((kind) ->
-          (error) ->
+        ((kind) =>
+          (error) =>
             @emitter.emit("Failed", {
               kind: kind
               error: error
