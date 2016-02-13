@@ -6,6 +6,7 @@ NotificationView = null
 MicrosoftTranslatorClient = null
 TranslatorPlusDictionary = null
 TranslatorPlusDictionaryView = null
+ExternalApis = null
 
 module.exports = TranslatorPlusDictionary =
   subscriptions: null
@@ -53,6 +54,7 @@ module.exports = TranslatorPlusDictionary =
     MicrosoftTranslatorClient = require('./microsoft-translator-client')
     TranslatorPlusDictionaryView = require('./translator-plus-dictionary-view')
     TranslatorPlusDictionary = require('./translator-plus-dictionary')
+    ExternalApis = require('./external-apis')
 
     # Initialize fields
     @subscriptions = new CompositeDisposable
@@ -92,6 +94,9 @@ module.exports = TranslatorPlusDictionary =
     # Register the commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:translate': => @translate()
     @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:close-all': => @closeAll()
+
+    # Load external APIs
+    ExternalApis.load(@translatorPlusDictionary)
 
   consumeStatusBar: (statusBar) ->
     # Add a tile to the status bar
