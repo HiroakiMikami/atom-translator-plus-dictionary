@@ -6,6 +6,8 @@ NotificationView = null
 TranslatorPlusDictionary = null
 TranslatorPlusDictionaryView = null
 ExternalApis = null
+MicrosoftTranslatorClient = null
+Dejizo = null
 
 module.exports = TranslatorPlusDictionary =
   subscriptions: null
@@ -49,10 +51,11 @@ module.exports = TranslatorPlusDictionary =
     Range ?= require('atom').Range
     franc ?= require('franc')
     NotificationView = require('./notification-view')
-    MicrosoftTranslatorClient = require('./microsoft-translator-client')
     TranslatorPlusDictionaryView = require('./translator-plus-dictionary-view')
     TranslatorPlusDictionary = require('./translator-plus-dictionary')
     ExternalApis = require('./external-apis')
+    MicrosoftTranslatorClient = require('./microsoft-translator-client')
+    Dejizo = require('./dejizo')
 
     # Initialize fields
     @subscriptions = new CompositeDisposable
@@ -83,6 +86,9 @@ module.exports = TranslatorPlusDictionary =
     microsoftTranslatorClientSecret = atom.config.get("translator-plus-dictionary.microsoftTranslatorClientSecret")
     microsoftTranslatorClient = new MicrosoftTranslatorClient(microsoftTranslatorClientId, microsoftTranslatorClientSecret)
     @translatorPlusDictionary.translators.push(microsoftTranslatorClient)
+    # Add Dejizo
+    dejizo = new Dejizo()
+    @translatorPlusDictionary.dictionaries.push(dejizo)
 
     # Wire all components
     @translatorPlusDictionary.onStarted(@notificationView.started)
