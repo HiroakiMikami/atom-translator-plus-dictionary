@@ -13,7 +13,7 @@
   "keywords": [
   ],
   "activationCommands": {
-    "atom-workspace": [
+    "atom-text-editor": [
       "translator-plus-dictionary:translate",
       "translator-plus-dictionary:close-all"
     ]

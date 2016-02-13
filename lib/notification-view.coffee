@@ -26,8 +26,8 @@ class NotificationView
 
   failed: (error) ->
     atom.notifications.addError(
-      error.kind,
-      detail: error.error.toString()
+      error.kind.name.toString(),
+      detail: error.error.message
     )
 
   updateMessage: ->

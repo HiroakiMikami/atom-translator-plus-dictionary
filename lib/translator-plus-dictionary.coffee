@@ -27,14 +27,18 @@ class TranslatorPlusDictionary
         type: "Translator"
       }
       translator.translate(text, from, to
-        (result) ->
-          succeeded(kind, result)
-        (error) ->
-          @emitter.emit("Failed", {
-            kind: kind
-            error: error
-          })
-          failed(kind, error)
+        ((kind) ->
+          (result) ->
+            succeeded(kind, result)
+        )(kind),
+        ((kind) =>
+          (error) =>
+            @emitter.emit("Failed", {
+              kind: kind
+              error: error
+            })
+            failed(kind, error)
+        )(kind)
       )
     for dictionary in @dictionaries
       if not dictionary.canBeUsed(from, to) then continue
@@ -43,14 +47,18 @@ class TranslatorPlusDictionary
         type: "Dictionary"
       }
       dictionary.find(text, from, to
-        (result) ->
-          succeeded(kind, result)
-        (error) ->
-          @emitter.emit("Failed", {
-            kind: kind
-            error: error
-          })
-          failed(kind, error)
+        ((kind) ->
+          (result) ->
+            succeeded(kind, result)
+        )(kind),
+        ((kind) =>
+          (error) =>
+            @emitter.emit("Failed", {
+              kind: kind
+              error: error
+            })
+            failed(kind, error)
+        )(kind)
       )
     @emitter.emit("Finished")
 

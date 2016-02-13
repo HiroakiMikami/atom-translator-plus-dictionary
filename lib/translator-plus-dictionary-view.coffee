@@ -152,13 +152,13 @@ class TranslatorPlusDictionaryView
     @translatorPlusDictionary.translate(
       @text, from, to,
       (kind, result) =>
-        resultDom = @results[kind]
+        resultDom = @results[kind.name]
         if not resultDom?
           resultDom = document.createElement("div")
           resultDom.className = "result"
           @content.appendChild(resultDom)
 
-          @results[kind] = resultDom
+          @results[kind.name] = resultDom
 
         resultDom.innerHTML = TranslatorPlusDictionaryView.resultTemplate.render({
           name: kind.name

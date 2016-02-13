@@ -3,9 +3,11 @@ Language = null
 Range = null
 franc = null
 NotificationView = null
-MicrosoftTranslatorClient = null
 TranslatorPlusDictionary = null
 TranslatorPlusDictionaryView = null
+ExternalApis = null
+MicrosoftTranslatorClient = null
+Dejizo = null
 
 module.exports = TranslatorPlusDictionary =
   subscriptions: null
@@ -14,7 +16,6 @@ module.exports = TranslatorPlusDictionary =
   primaryLanguage: null
   secondaryLanguage: null
 
-  microsoftTranslatorClient: null
   translatorPlusDictionary: null
   notificationView: null
 
@@ -50,9 +51,11 @@ module.exports = TranslatorPlusDictionary =
     Range ?= require('atom').Range
     franc ?= require('franc')
     NotificationView = require('./notification-view')
-    MicrosoftTranslatorClient = require('./microsoft-translator-client')
     TranslatorPlusDictionaryView = require('./translator-plus-dictionary-view')
     TranslatorPlusDictionary = require('./translator-plus-dictionary')
+    ExternalApis = require('./external-apis')
+    MicrosoftTranslatorClient = require('./microsoft-translator-client')
+    Dejizo = require('./dejizo')
 
     # Initialize fields
     @subscriptions = new CompositeDisposable
@@ -83,6 +86,9 @@ module.exports = TranslatorPlusDictionary =
     microsoftTranslatorClientSecret = atom.config.get("translator-plus-dictionary.microsoftTranslatorClientSecret")
     microsoftTranslatorClient = new MicrosoftTranslatorClient(microsoftTranslatorClientId, microsoftTranslatorClientSecret)
     @translatorPlusDictionary.translators.push(microsoftTranslatorClient)
+    # Add Dejizo
+    dejizo = new Dejizo()
+    @translatorPlusDictionary.dictionaries.push(dejizo)
 
     # Wire all components
     @translatorPlusDictionary.onStarted(@notificationView.started)
@@ -90,8 +96,11 @@ module.exports = TranslatorPlusDictionary =
     @translatorPlusDictionary.onFailed(@notificationView.failed)
 
     # Register the commands
-    @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:translate': => @translate()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:close-all': => @closeAll()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'translator-plus-dictionary:translate': => @translate()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'translator-plus-dictionary:close-all': => @closeAll()
+
+    # Load external APIs
+    ExternalApis.load(@translatorPlusDictionary)
 
   consumeStatusBar: (statusBar) ->
     # Add a tile to the status bar
