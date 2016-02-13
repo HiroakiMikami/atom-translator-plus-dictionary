@@ -92,8 +92,8 @@ module.exports = TranslatorPlusDictionary =
     @translatorPlusDictionary.onFailed(@notificationView.failed)
 
     # Register the commands
-    @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:translate': => @translate()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'translator-plus-dictionary:close-all': => @closeAll()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'translator-plus-dictionary:translate': => @translate()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'translator-plus-dictionary:close-all': => @closeAll()
 
     # Load external APIs
     ExternalApis.load(@translatorPlusDictionary)
