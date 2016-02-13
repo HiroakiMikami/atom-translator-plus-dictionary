@@ -13,6 +13,10 @@
   "keywords": [
   ],
   "activationCommands": {
+    "atom-workspace": [
+      "translator-plus-dictionary:translate",
+      "translator-plus-dictionary:close-all"
+    ]
   },
   "repository": "https://github.com/atom/translator-plus-dictionary",
   "license": "MIT",
