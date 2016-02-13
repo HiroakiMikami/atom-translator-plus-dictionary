@@ -3,6 +3,7 @@ fs = null
 loophole = null
 allowUnsafeEval = null
 allowUnsafeNewFunction = null
+Emitter = null
 
 module.exports =
 class TranslatorPlusDictionaryView
@@ -13,6 +14,8 @@ class TranslatorPlusDictionaryView
   toLanguage: null
   closeIcon: null
   content: null
+
+  emitter: null
 
   @initializeTemplates: (viewTemplateGenerated) ->
     if TranslatorPlusDictionaryView.viewTemplate?
@@ -44,6 +47,10 @@ class TranslatorPlusDictionaryView
     loophole ?= require 'loophole'
     allowUnsafeEval ?= loophole.allowUnsafeEval
     allowUnsafeNewFunction ?= loophole.allowUnsafeNewFunction
+    Emitter ?= require('atom').Emitter
+
+    # Initialize fields
+    @emitter = new Emitter
 
     # Initialize templates of Hogan.js
     TranslatorPlusDictionaryView.initializeTemplates(
@@ -63,6 +70,9 @@ class TranslatorPlusDictionaryView
         @toLanguage = @element.getElementsByClassName("to")[0]
         @closeIcon = @element.getElementsByClassName("close-icon")[0]
 
+        # Set event listeners
+        @closeIcon.addEventListener("click", () => @emitter.emit("Closed"))
+
         # Set default languges
         if target.from?
           i = 0
@@ -80,7 +90,10 @@ class TranslatorPlusDictionaryView
           @toLanguage.selectedIndex = i
     )
 
+  onClosed: (callback) -> @emitter.on("Closed", callback)
+
   destroy: ->
+    @emitter.dispose()
     @decoration?.destroy()
     @marker?.destroy()
     @element?.remove()
