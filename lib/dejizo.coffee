@@ -80,7 +80,7 @@ class Dejizo extends Dictionary
         new Promise((resolve, reject) ->
           result = Dejizo.domParser.parseFromString(response, "application/xml")
           errorMessages = result.getElementsByTagName("ErrorMessage")[0]
-          if errorMessages.children.length != 0
+          if not errorMessages? || errorMessages.children.length != 0
             reject({
               message: "Some errors are occurred in Dejizo API"
               err: errorMessages
