@@ -13,8 +13,6 @@ MAX_ITEM_NUM = 2 # TODO should move the configuration
 ###
 module.exports =
 class Dejizo extends Dictionary
-  @dictionariesFromJapanese: {}
-  @dictionariesToJapanese: {}
   @domParser: null
 
   constructor: () ->
