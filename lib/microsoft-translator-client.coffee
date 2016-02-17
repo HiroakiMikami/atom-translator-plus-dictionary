@@ -6,14 +6,14 @@ Promise = null
 Translator = require('./translator')
 Language = null
 
+# Constants used to call Microft Translator APIs
+ACCESS_TOKEN_URI = 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13'
+TRANSLATE_URL = 'http://api.microsofttranslator.com/V2/Http.svc/Translate'
+SCOPE = 'http://api.microsofttranslator.com'
+GRANT_TYPE = 'client_credentials'
+
 module.exports =
 class MicrosoftTranslatorClient extends Translator
-  # Constants used to call Microft Translator APIs
-  @accessTokenURI: 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13'
-  @translateURL: 'http://api.microsofttranslator.com/V2/Http.svc/Translate'
-  @scope: 'http://api.microsofttranslator.com'
-  @grantType: 'client_credentials'
-
   accessTokenRequestOptions = null
   accessToken = null
 
@@ -29,12 +29,12 @@ class MicrosoftTranslatorClient extends Translator
 
     # Initialize a field
     @accessTokenRequestOptions ?=
-      uri: MicrosoftTranslatorClient.accessTokenURI
+      uri: ACCESS_TOKEN_URI
       form:
         client_id: clientId
         client_secret: clientSecret
-        scope: MicrosoftTranslatorClient.scope
-        grant_type: MicrosoftTranslatorClient.grantType
+        scope: SCOPE
+        grant_type: GRANT_TYPE
       json: true
 
   languageToCode: (language) ->
@@ -171,7 +171,7 @@ class MicrosoftTranslatorClient extends Translator
           to: toCode
           from: fromCode
         options =
-          url: "#{MicrosoftTranslatorClient.translateURL}?#{queryString.stringify(query)}"
+          url: "#{TRANSLATE_URL}?#{queryString.stringify(query)}"
           json: true
 
         new Promise((resolve, reject) =>
