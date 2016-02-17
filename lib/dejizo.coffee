@@ -1,5 +1,6 @@
 request = null
 queryString = null
+Promise = null
 Dictionary = require('./dictionary')
 
 DEJIZO_URL = "http://public.dejizo.jp/NetDicV09.asmx"
@@ -18,6 +19,7 @@ class Dejizo extends Dictionary
     # Initlaize modules
     request ?= require('request')
     queryString ?= require('query-string')
+    Promise ?= require 'bluebird'
 
     Dejizo.domParser ?= new window.DOMParser()
 

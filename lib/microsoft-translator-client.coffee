@@ -1,6 +1,7 @@
 request = null
 queryString = null
 htmlparser = null
+Promise = null
 Translator = require('./translator')
 Language = null
 
@@ -22,6 +23,7 @@ class MicrosoftTranslatorClient extends Translator
     request ?= require('request')
     queryString ?= require("query-string")
     htmlparser ?= require("htmlparser")
+    Promise ?= require 'bluebird'
     Language ?= require('./language')
 
     @accessTokenRequestOptions ?=

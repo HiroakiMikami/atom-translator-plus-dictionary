@@ -3,6 +3,7 @@ fs = null
 loophole = null
 allowUnsafeEval = null
 allowUnsafeNewFunction = null
+Promise = null
 Emitter = null
 Language = null
 
@@ -82,6 +83,7 @@ class TranslatorPlusDictionaryView
     loophole ?= require 'loophole'
     allowUnsafeEval ?= loophole.allowUnsafeEval
     allowUnsafeNewFunction ?= loophole.allowUnsafeNewFunction
+    Promise ?= require 'bluebird'
     Emitter ?= require('atom').Emitter
     Language ?= require('./language')
 
