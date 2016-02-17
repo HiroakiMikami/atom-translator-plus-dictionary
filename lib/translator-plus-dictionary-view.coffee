@@ -24,6 +24,7 @@ class TranslatorPlusDictionaryView
   @initializeTemplates: (viewTemplateGenerated, resultTemplateGenerated) ->
     initilizeViewTempalte = (callback) ->
       if TranslatorPlusDictionaryView.viewTemplate?
+        # The template for this view is initialized already
         callback()
       else
         # Initialize a template for this view.
@@ -46,6 +47,7 @@ class TranslatorPlusDictionaryView
         )
     initializeResultTemplte = (callback) ->
       if TranslatorPlusDictionaryView.resultTemplate?
+        # The template for the result is initialized already
         callback()
       else
         # Initialize a template for the result.
@@ -134,6 +136,7 @@ class TranslatorPlusDictionaryView
         @fromLanguage.addEventListener("change", @changed)
         @toLanguage.addEventListener("change", @changed)
 
+        # Translate if the languages are set
         @changed()
     )
 
@@ -151,9 +154,11 @@ class TranslatorPlusDictionaryView
 
     return unless from? && to?
 
+    # Translate the text
     @translatorPlusDictionary.translate(
       @text, from, to,
       (kind, result) =>
+        # Show the result
         resultDom = @results[kind.name]
         if not resultDom?
           resultDom = document.createElement("div")

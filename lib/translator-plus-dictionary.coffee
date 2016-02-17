@@ -19,6 +19,7 @@ class TranslatorPlusDictionary
     @emitter?.dispose()
 
   translate: (text, from, to, succeeded, failed) ->
+    # TODO Deal with only **one** translation at the same time.
     @emitter.emit("Started")
     for translator in @translators
       if not translator.canBeUsed(from, to) then continue

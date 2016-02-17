@@ -1,3 +1,4 @@
+# Modules
 request = null
 queryString = null
 htmlparser = null
@@ -26,6 +27,7 @@ class MicrosoftTranslatorClient extends Translator
     Promise ?= require 'bluebird'
     Language ?= require('./language')
 
+    # Initialize a field
     @accessTokenRequestOptions ?=
       uri: MicrosoftTranslatorClient.accessTokenURI
       form:
@@ -36,10 +38,10 @@ class MicrosoftTranslatorClient extends Translator
       json: true
 
   languageToCode: (language) ->
-    # Language code is https://msdn.microsoft.com/en-us/library/hh456380.aspx
+    # Language code: https://msdn.microsoft.com/en-us/library/hh456380.aspx
     switch language.code
       when "cmn"
-        "zh-CHS" # TODO I do not know the difference of zu-CHS and zu-CHT and Mandarin Chinise
+        "zh-CHS" # TODO I do not know the difference of zu-CHS, zu-CHT, and Mandarin Chinise
       when "spa"
         "es"
       when "eng"
@@ -143,7 +145,7 @@ class MicrosoftTranslatorClient extends Translator
           resolve(@accessToken.token)
         else
           requestedTime = new Date().getTime()
-          # Invalid, get an access token via API
+          # Get an access token via API if the previous access token is invalid
           request.post(@accessTokenRequestOptions, (error, response, body) =>
             if !error? || 200 <= response.statusCode < 400
               # Update the access token

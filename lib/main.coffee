@@ -1,3 +1,4 @@
+# Modules
 CompositeDisposable = null
 Language = null
 Range = null
@@ -72,7 +73,7 @@ module.exports = TranslatorPlusDictionary =
         # TODO notify an error
         continue
 
-      ## Store the used languages information in the form of Language class instances
+      ## Store the usable languages information in the form of Language class instances
       @languages.push(language)
       @francOptions.whitelist.push(code)
     @primaryLanguage = Language.getFromCode(atom.config.get("translator-plus-dictionary.primaryLanguage"))
@@ -164,6 +165,7 @@ module.exports = TranslatorPlusDictionary =
       else
         target.to = @primaryLanguage
 
+      # Generate a view
       view = new TranslatorPlusDictionaryView(
         editor,
         target,
