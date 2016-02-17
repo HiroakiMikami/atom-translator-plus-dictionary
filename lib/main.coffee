@@ -12,14 +12,16 @@ Dejizo = null
 
 module.exports = TranslatorPlusDictionary =
   subscriptions: null
+
   languages: null
-  francOptions: null
   primaryLanguage: null
   secondaryLanguage: null
 
-  translatorPlusDictionary: null
-  notificationView: null
+  francOptions: null
 
+  translatorPlusDictionary: null
+
+  notificationView: null
   views: null
 
   config:
@@ -47,26 +49,30 @@ module.exports = TranslatorPlusDictionary =
 
   activate: (state) ->
     # Initialize modules and classes
-    Language ?= require('./language')
     CompositeDisposable ?= require('atom').CompositeDisposable
     Range ?= require('atom').Range
     franc ?= require('franc')
-    NotificationView = require('./notification-view')
-    TranslatorPlusDictionaryView = require('./translator-plus-dictionary-view')
+    Language ?= require('./language')
     TranslatorPlusDictionary = require('./translator-plus-dictionary')
     ExternalApis = require('./external-apis')
+    NotificationView = require('./notification-view')
+    TranslatorPlusDictionaryView = require('./translator-plus-dictionary-view')
     MicrosoftTranslatorClient = require('./microsoft-translator-client')
     Dejizo = require('./dejizo')
 
     # Initialize fields
     @subscriptions = new CompositeDisposable
-    @views = []
-    languageCodes = atom.config.get("translator-plus-dictionary.languages").split(/,\s*/)
     @languages = []
     @francOptions = {
       whitelist: []
       minLength: 1
     }
+    @translatorPlusDictionary = new TranslatorPlusDictionary()
+    @notificationView = new NotificationView()
+    @views = []
+
+    # Initialize languages
+    languageCodes = atom.config.get("translator-plus-dictionary.languages").split(/,\s*/)
     for code in languageCodes
       language = Language.getFromCode(code)
       if language == null
@@ -79,9 +85,6 @@ module.exports = TranslatorPlusDictionary =
     @primaryLanguage = Language.getFromCode(atom.config.get("translator-plus-dictionary.primaryLanguage"))
     @secondaryLanguage = Language.getFromCode(atom.config.get("translator-plus-dictionary.secondaryLanguage"))
 
-    @notificationView = new NotificationView()
-
-    @translatorPlusDictionary = new TranslatorPlusDictionary()
     # Add Microsoft Translator
     microsoftTranslatorClientId = atom.config.get("translator-plus-dictionary.microsoftTranslatorClientId")
     microsoftTranslatorClientSecret = atom.config.get("translator-plus-dictionary.microsoftTranslatorClientSecret")
@@ -91,7 +94,10 @@ module.exports = TranslatorPlusDictionary =
     dejizo = new Dejizo()
     @translatorPlusDictionary.dictionaries.push(dejizo)
 
-    # Wire all components
+    # Load external APIs
+    ExternalApis.load(@translatorPlusDictionary)
+
+    # Wire TranslatorPlusDictionary and NotificationView
     @translatorPlusDictionary.onStarted(@notificationView.started)
     @translatorPlusDictionary.onFinished(@notificationView.finished)
     @translatorPlusDictionary.onFailed(@notificationView.failed)
@@ -99,9 +105,6 @@ module.exports = TranslatorPlusDictionary =
     # Register the commands
     @subscriptions.add atom.commands.add 'atom-text-editor', 'translator-plus-dictionary:translate': => @translate()
     @subscriptions.add atom.commands.add 'atom-text-editor', 'translator-plus-dictionary:close-all': => @closeAll()
-
-    # Load external APIs
-    ExternalApis.load(@translatorPlusDictionary)
 
   consumeStatusBar: (statusBar) ->
     # Add a tile to the status bar

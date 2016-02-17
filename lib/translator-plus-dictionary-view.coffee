@@ -77,8 +77,6 @@ class TranslatorPlusDictionaryView
 
 
   constructor: (editor, target, languages, @translatorPlusDictionary) ->
-    @text = target.text
-
     # Initialize a module
     fs ?= require('fs')
     hogan ?= require('hogan.js')
@@ -92,6 +90,7 @@ class TranslatorPlusDictionaryView
     # Initialize fields
     @emitter = new Emitter
     @results = {}
+    @text = target.text
 
     # Initialize templates of Hogan.js
     TranslatorPlusDictionaryView.initializeTemplates(
