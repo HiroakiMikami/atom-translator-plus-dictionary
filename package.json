@@ -23,6 +23,10 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/HiroakiMikami/atom-translator-plus-dictionary/issues"
+  },
   "dependencies": {
     "request": ">=2.69.0 <3.0.0",
     "query-string": ">=3.0.0 <4.0.0",
