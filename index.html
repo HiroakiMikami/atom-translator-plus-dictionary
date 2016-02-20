@@ -19,14 +19,45 @@
     </section>
 
     <section class="main-content">
-      <h1>
-<a id="translator-plus-dictionary" class="anchor" href="#translator-plus-dictionary" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>translator-plus-dictionary</h1>
+      <h1 id="translator-plus-dictionary">translator-plus-dictionary</h1>
+      <p>This package enables you to translate a text and consult a dictionary. Currently, <a href="https://www.microsoft.com/en-us/translator/default.aspx">Microsoft Translator</a> and <a href="https://dejizo.jp/dev/">Dejizo</a> are supported. Other APIs can be added(see External APIs below).</p>
+      <div class="figure">
+      <img src="screenshot.gif" alt="" />
 
-<h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
-
-<p>This software is released under the MIT License, see <a href="LICENSE.md">LICENSE.md</a>.</p>
-
+      </div>
+      <h2 id="commands">Commands</h2>
+      <h3 id="translator-plus-dictionarytranslate-ctrl-c-ctrl-t-by-default"><code>translator-plus-dictionary:translate</code> (<code>Ctrl-c Ctrl-t</code> by default)</h3>
+      <p>Opens views, translate a selected text, and consult a dictionary. If no text is selected, this package uses a word that the cursor of Atom.io is positioned in.</p>
+      <h3 id="translator-plus-dictionaryclose-all-esc-by-default"><code>translator-plus-dictionary:close-all</code> (<code>Esc</code> by default)</h3>
+      <p>Close all views.</p>
+      <h2 id="features">Features</h2>
+      <h3 id="language-detection">Language Detection</h3>
+      <p>This package recognizes the language by using <a href="https://github.com/wooorm/franc">franc</a>. Thus, you do not have to select the languages when you translate a text or consult a dictionary.</p>
+      <h3 id="external-apis">External APIs</h3>
+      <p>This package adds all translator/dictionary APIs declared in the <code>.atom/dictionaries.coffee</code> or <code>./atom/translators.coffee</code>.</p>
+      <h4 id="example">Example</h4>
+      <p>Example of a <code>.atom/translators.coffee</code> file</p>
+      <pre class="coffeescript:translators.coffee"><code>module.exports = Translators = [
+        {
+          name: &quot;Sample API&quot;
+          canBeUsed: (from, to) -&gt; from.code == &#39;en&#39;
+          translate: (text, from, to, succeeded, failed) -&gt;
+            # Use an API, and invoke callback functions(succeeded or failed)
+        }
+      ]</code></pre>
+      <p>Example of a <code>.atom/dictionaries.coffee</code> file</p>
+      <pre class="coffeescript:dictionaries.coffee"><code>module.exports = Dictionaries = [
+        {
+          name: &quot;Sample API&quot;
+          canBeUsed: (from, to) -&gt; from.code == &#39;en&#39;
+          find: (text, from, to, succeeded, failed) -&gt;
+            # Use an API, and invoke callback functions(succeeded or failed)
+            # Currently, translators and dictionaries are not
+        }
+      ]</code></pre>
+      <p>A <a href="./sample">sample directory</a> contains simple examples of external APIs.</p>
+      <h2 id="license">License</h2>
+      <p>This software is released under the MIT License, see <a href="LICENSE.md" class="uri">LICENSE.md</a>.</p>
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/HiroakiMikami/atom-translator-plus-dictionary">Atom-translator-plus-dictionary</a> is maintained by <a href="https://github.com/HiroakiMikami">HiroakiMikami</a>.</span>
 
@@ -35,6 +66,6 @@
 
     </section>
 
-  
+
   </body>
 </html>
