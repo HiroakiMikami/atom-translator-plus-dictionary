@@ -20,6 +20,10 @@ class TranslatorPlusDictionary
 
   translate: (text, from, to, succeeded, failed) ->
     numberOfUsedApis = 0
+    emitFinishedIfNeeded = () =>
+      numberOfUsedApis -= 1
+      if numberOfUsedApis is 0
+        @emitter.emit("Finished")
 
     # TODO Deal with only **one** translation at the same time.
     @emitter.emit("Started")
@@ -35,6 +39,7 @@ class TranslatorPlusDictionary
         ((kind) ->
           (result) ->
             succeeded(kind, result)
+            emitFinishedIfNeeded()
         )(kind),
         ((kind) =>
           (error) =>
@@ -43,6 +48,7 @@ class TranslatorPlusDictionary
               error: error
             })
             failed(kind, error)
+            emitFinishedIfNeeded()
         )(kind)
       )
     for dictionary in @dictionaries
@@ -57,6 +63,7 @@ class TranslatorPlusDictionary
         ((kind) ->
           (result) ->
             succeeded(kind, result)
+            emitFinishedIfNeeded()
         )(kind),
         ((kind) =>
           (error) =>
@@ -65,6 +72,7 @@ class TranslatorPlusDictionary
               error: error
             })
             failed(kind, error)
+            emitFinishedIfNeeded()
         )(kind)
       )
 
@@ -78,8 +86,6 @@ class TranslatorPlusDictionary
           message: "There are no APIs that translates from #{from.name} to #{to.name}."
         }
       })
-
-    @emitter.emit("Finished")
 
   onStarted: (callback) -> @emitter.on("Started", callback)
   onFinished: (callback) -> @emitter.on("Finished", callback)
