@@ -19,7 +19,7 @@
       "translator-plus-dictionary:close-all"
     ]
   },
-  "repository": "https://github.com/atom/translator-plus-dictionary",
+  "repository": "https://github.com/HiroakiMikami/atom-translator-plus-dictionary",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
