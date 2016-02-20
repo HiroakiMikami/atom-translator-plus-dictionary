@@ -3,6 +3,7 @@ fs = null
 loophole = null
 allowUnsafeEval = null
 allowUnsafeNewFunction = null
+Promise = null
 Emitter = null
 Language = null
 
@@ -23,6 +24,7 @@ class TranslatorPlusDictionaryView
   @initializeTemplates: (viewTemplateGenerated, resultTemplateGenerated) ->
     initilizeViewTempalte = (callback) ->
       if TranslatorPlusDictionaryView.viewTemplate?
+        # The template for this view is initialized already
         callback()
       else
         # Initialize a template for this view.
@@ -45,6 +47,7 @@ class TranslatorPlusDictionaryView
         )
     initializeResultTemplte = (callback) ->
       if TranslatorPlusDictionaryView.resultTemplate?
+        # The template for the result is initialized already
         callback()
       else
         # Initialize a template for the result.
@@ -74,20 +77,20 @@ class TranslatorPlusDictionaryView
 
 
   constructor: (editor, target, languages, @translatorPlusDictionary) ->
-    @text = target.text
-
     # Initialize a module
     fs ?= require('fs')
     hogan ?= require('hogan.js')
     loophole ?= require 'loophole'
     allowUnsafeEval ?= loophole.allowUnsafeEval
     allowUnsafeNewFunction ?= loophole.allowUnsafeNewFunction
+    Promise ?= require 'bluebird'
     Emitter ?= require('atom').Emitter
     Language ?= require('./language')
 
     # Initialize fields
     @emitter = new Emitter
     @results = {}
+    @text = target.text
 
     # Initialize templates of Hogan.js
     TranslatorPlusDictionaryView.initializeTemplates(
@@ -132,6 +135,7 @@ class TranslatorPlusDictionaryView
         @fromLanguage.addEventListener("change", @changed)
         @toLanguage.addEventListener("change", @changed)
 
+        # Translate if the languages are set
         @changed()
     )
 
@@ -149,9 +153,11 @@ class TranslatorPlusDictionaryView
 
     return unless from? && to?
 
+    # Translate the text
     @translatorPlusDictionary.translate(
       @text, from, to,
       (kind, result) =>
+        # Show the result
         resultDom = @results[kind.name]
         if not resultDom?
           resultDom = document.createElement("div")

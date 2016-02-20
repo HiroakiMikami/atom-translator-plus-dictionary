@@ -1,17 +1,19 @@
+# Modules
 request = null
 queryString = null
 htmlparser = null
+Promise = null
 Translator = require('./translator')
 Language = null
 
+# Constants used to call Microft Translator APIs
+ACCESS_TOKEN_URI = 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13'
+TRANSLATE_URL = 'http://api.microsofttranslator.com/V2/Http.svc/Translate'
+SCOPE = 'http://api.microsofttranslator.com'
+GRANT_TYPE = 'client_credentials'
+
 module.exports =
 class MicrosoftTranslatorClient extends Translator
-  # Constants used to call Microft Translator APIs
-  @accessTokenURI: 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13'
-  @translateURL: 'http://api.microsofttranslator.com/V2/Http.svc/Translate'
-  @scope: 'http://api.microsofttranslator.com'
-  @grantType: 'client_credentials'
-
   accessTokenRequestOptions = null
   accessToken = null
 
@@ -22,22 +24,24 @@ class MicrosoftTranslatorClient extends Translator
     request ?= require('request')
     queryString ?= require("query-string")
     htmlparser ?= require("htmlparser")
+    Promise ?= require 'bluebird'
     Language ?= require('./language')
 
+    # Initialize a field
     @accessTokenRequestOptions ?=
-      uri: MicrosoftTranslatorClient.accessTokenURI
+      uri: ACCESS_TOKEN_URI
       form:
         client_id: clientId
         client_secret: clientSecret
-        scope: MicrosoftTranslatorClient.scope
-        grant_type: MicrosoftTranslatorClient.grantType
+        scope: SCOPE
+        grant_type: GRANT_TYPE
       json: true
 
   languageToCode: (language) ->
-    # Language code is https://msdn.microsoft.com/en-us/library/hh456380.aspx
+    # Language code: https://msdn.microsoft.com/en-us/library/hh456380.aspx
     switch language.code
       when "cmn"
-        "zh-CHS" # TODO I do not know the difference of zu-CHS and zu-CHT and Mandarin Chinise
+        "zh-CHS" # TODO I do not know the difference of zu-CHS, zu-CHT, and Mandarin Chinise
       when "spa"
         "es"
       when "eng"
@@ -141,7 +145,7 @@ class MicrosoftTranslatorClient extends Translator
           resolve(@accessToken.token)
         else
           requestedTime = new Date().getTime()
-          # Invalid, get an access token via API
+          # Get an access token via API if the previous access token is invalid
           request.post(@accessTokenRequestOptions, (error, response, body) =>
             if !error? || 200 <= response.statusCode < 400
               # Update the access token
@@ -167,7 +171,7 @@ class MicrosoftTranslatorClient extends Translator
           to: toCode
           from: fromCode
         options =
-          url: "#{MicrosoftTranslatorClient.translateURL}?#{queryString.stringify(query)}"
+          url: "#{TRANSLATE_URL}?#{queryString.stringify(query)}"
           json: true
 
         new Promise((resolve, reject) =>

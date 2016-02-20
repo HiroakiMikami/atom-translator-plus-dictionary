@@ -1,3 +1,4 @@
+# Modules
 path = null
 fs = null
 
@@ -26,6 +27,7 @@ class ExternalApis
       else
         ExternalApis.dictionaries = []
 
+    # Add external APIs into TranslatorPlusDictionary
     Array.prototype.push.apply(
       translatorPlusDictionary.translators,
       ExternalApis.translators

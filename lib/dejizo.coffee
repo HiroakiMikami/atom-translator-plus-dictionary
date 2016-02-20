@@ -1,24 +1,27 @@
+# Modules
 request = null
 queryString = null
+Promise = null
 Dictionary = require('./dictionary')
 
+# Constants
 DEJIZO_URL = "http://public.dejizo.jp/NetDicV09.asmx"
-MAX_ITEM_NUM = 2
+MAX_ITEM_NUM = 2 # TODO should move the configuration
 
 ###
-[Dejizo](https://dejizo.jp/dev/) is a dictionary API used in Japan .
+[Dejizo](https://dejizo.jp/dev/) is a dictionary API used in Japan.
 ###
 module.exports =
 class Dejizo extends Dictionary
-  @dictionariesFromJapanese: {}
-  @dictionariesToJapanese: {}
   @domParser: null
 
   constructor: () ->
     # Initlaize modules
     request ?= require('request')
     queryString ?= require('query-string')
+    Promise ?= require 'bluebird'
 
+    # Initialize a static field
     Dejizo.domParser ?= new window.DOMParser()
 
   name: -> "デ辞蔵"
@@ -48,7 +51,7 @@ class Dejizo extends Dictionary
           message: "#{from.name} cannot be used in Dejizo"
         })
       else
-        # Call API
+        # Call the API via HTTP
         query =
           Dic: dictId
           Word: text
@@ -77,7 +80,7 @@ class Dejizo extends Dictionary
         new Promise((resolve, reject) ->
           result = Dejizo.domParser.parseFromString(response, "application/xml")
           errorMessages = result.getElementsByTagName("ErrorMessage")[0]
-          if errorMessages.children.length != 0
+          if not errorMessages? || errorMessages.children.length != 0
             reject({
               message: "Some errors are occurred in Dejizo API"
               err: errorMessages
@@ -99,6 +102,7 @@ class Dejizo extends Dictionary
 
         new Promise((resolve, reject) ->
           getItem = ()->
+            # Obtain the content of an item via Dejizo API
             query =
               Dic: dictId
               Item: tmpIds[0]
@@ -117,6 +121,7 @@ class Dejizo extends Dictionary
                     err: errorMessages
                   })
                 else
+                  # Extract the content
                   head = result.getElementsByTagName("Head")[0].innerHTML
                   body = result.getElementsByTagName("Body")[0].innerHTML
                   resultHtml += "#{head}#{body}"
@@ -125,6 +130,7 @@ class Dejizo extends Dictionary
                   if tmpIds.length == 0
                     resolve(resultHtml)
                   else
+                    # Process a next item
                     getItem()
               else
                 reject({

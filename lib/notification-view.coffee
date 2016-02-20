@@ -4,6 +4,7 @@ class NotificationView
   translatingNumbers: null
 
   constructor: ->
+    # Initialize fields
     @statusBar = document.createElement("div")
     @statusBar.is = "status-bar-translator-plus-dictionary"
     @statusBar.className = "inline-block"
