@@ -116,19 +116,29 @@ class TranslatorPlusDictionaryView
 
         # Set default languges
         if target.from?
+          index = null
           i = 0
           for opt in @fromLanguage.children
             if opt.value == target.from.code
+              index = i
               break
             i += 1
-          @fromLanguage.selectedIndex = i
+          if index?
+            @fromLanguage.selectedIndex = index
+          else
+            @fromLanguage.selectedIndex = 0
         if target.to?
+          index = null
           i = 0
           for opt in @toLanguage.children
             if opt.value == target.to.code
+              index = i
               break
             i += 1
-          @toLanguage.selectedIndex = i
+          if index?
+            @toLanguage.selectedIndex = index
+          else
+            @toLanguage.selectedIndex = 0
       ,
       () =>
         # Set event listeners
