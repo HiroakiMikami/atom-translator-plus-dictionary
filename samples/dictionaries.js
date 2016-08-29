@@ -10,11 +10,13 @@ module.exports = Dictionaries = [
     },
     find: (text, from, to, succeeded, failed) => {
       // Translate ${text} from ${from} to ${to}
-      try {
-        succeeded("<b>Result</b>")
-      } catch (error) {
-        failed("error")
-      }
+      return new Promise((resolve, reject) => {
+        try {
+          resolve("<b>Result</b>")
+        } catch (error) {
+          reject("error")
+        }
+      })
     }
   }
 ]

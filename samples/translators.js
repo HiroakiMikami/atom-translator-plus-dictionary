@@ -8,13 +8,15 @@ module.exports = Translators = [
       */
       return true
     },
-    translate: (text, from, to, succeeded, failed) => {
+    translate: (text, from, to) => {
       // Translate ${text} from ${from} to ${to}
-      try {
-        succeeded("<b>Result</b>")
-      } catch (error) {
-        failed("error")
-      }
+      return new Promise((resolve, reject) => {
+        try {
+          resolve("<b>Result</b>")
+        } catch (error) {
+          reject("error")
+        }
+      })
     }
   }
 ]

@@ -13,9 +13,11 @@ class StubTranslator extends Translator {
     this.called = called
   }
   canBeUsed(from, to) { return (from === this.from) && (to === this.to) }
-  translate(text, from, to, succeeded, failed) {
+  translate(text, from, to) {
     this.called()
-    succeeded(this.result)
+    return new Promise((resolve) => {
+      resolve(this.result)
+    })
   }
 }
 
@@ -57,18 +59,23 @@ describe('TranslatorPlusDictionary', () => {
     })
     it('emits "Finished" event if all APIs return the results.', () => {
       let isCalled = false
-      const target = new TranslatorPlusDictionary()
-      target.onFinished(() => {
-        isCalled = true
+      waitsForPromise(() => {
+        return new Promise((resolve) => {
+          const target = new TranslatorPlusDictionary()
+          target.onFinished(() => {
+            isCalled = true
+            resolve()
+          })
+
+          target.translators.push(new StubTranslator(
+            Language.getFromCode("eng"), Language.getFromCode("jpn"), "",
+            () => {}
+          ))
+
+          target.translate("", Language.getFromCode("eng"), Language.getFromCode("jpn"), () => {}, () => {})
+        })
       })
-
-      target.translators.push(new StubTranslator(
-        Language.getFromCode("eng"), Language.getFromCode("jpn"), "",
-        () => {}
-      ))
-
-      target.translate("", Language.getFromCode("eng"), Language.getFromCode("jpn"), () => {}, () => {})
-      expect(isCalled).toBe(true)
+      runs(() => expect(isCalled).toBe(true))
     })
     it('emits "Failed" event if there is no APIs', () => {
       let isCalled = false
