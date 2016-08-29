@@ -1,15 +1,17 @@
-div(class="popover-list select-list")
-  a.close-icon
-  div.content
-  div.menu
-    div.language
-      select(class="form-control from")
-        option(value="none")
-        each language in languages
-          option(value=language.code) #{language.name}
-    span.arrow
-    div.language
-      select(class="form-control to")
-        option(value="none")
-        each language in languages
-          option(value=language.code) #{language.name}
+div(class="popover-list select-list section-container")
+  div.row
+    a.close-icon
+  div(class="row content")
+  div.section-footer
+    div.menu
+      div.language
+        select(class="form-control from")
+          option(value="none")
+          each language in languages
+            option(value=language.code) #{language.name}
+      span.arrow
+      div.language
+        select(class="form-control to")
+          option(value="none")
+          each language in languages
+            option(value=language.code) #{language.name}
