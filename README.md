@@ -41,8 +41,8 @@ module.exports = Translators = [
     canBeUsed: (from, to) => {
       return from.code === 'en'
     },
-    translate: (text, from, to, succeeded, failed) => {
-      // Use an API, and invoke callback functions(succeeded or failed)
+    translate: (text, from, to) => {
+      // Use an API and return a Promise
     }
   }
 ]
@@ -56,8 +56,8 @@ module.exports = Translators = [
     canBeUsed: (from, to) => {
       return from.code === 'en'
     },
-    find: (text, from, to, succeeded, failed) => {
-      // Use an API, and invoke callback functions(succeeded or failed)
+    find: (text, from, to) => {
+      // Use an API and return a Promise
       // Currently, translators and dictionaries are not
     }
   }
