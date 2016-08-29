@@ -9,4 +9,5 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-text-editor:not(.mini)':
   'ctrl-c ctrl-t': 'translator-plus-dictionary:translate'
+'atom-text-editor:not(.mini).translator-plus-dictionary-active':
   'escape': 'translator-plus-dictionary:close-all'
