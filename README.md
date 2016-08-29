@@ -30,30 +30,36 @@ Close all views.
 This package recognizes the language by using [franc](https://github.com/wooorm/franc). Thus, you do not have to select the languages when you translate a text or consult a dictionary.
 
 ### External APIs
-This package adds all translator/dictionary APIs declared in the `.atom/dictionaries.coffee` or `./atom/translators.coffee`.
+This package adds all translator/dictionary APIs declared in the `.atom/dictionaries.js` or `./atom/translators.js`.
 
 #### Example
-Example of a `.atom/translators.coffee` file
-```CoffeeScript:translators.coffee
+Example of a `.atom/translators.js` file
+```JavaScript
 module.exports = Translators = [
   {
-    name: "Sample API"
-    canBeUsed: (from, to) -> from.code == 'en'
-    translate: (text, from, to, succeeded, failed) ->
-      # Use an API, and invoke callback functions(succeeded or failed)
+    name: () => "Sample API",
+    canBeUsed: (from, to) => {
+      return from.code === 'en'
+    },
+    find: (text, from, to, succeeded, failed) => {
+      // Use an API, and invoke callback functions(succeeded or failed)
+    }
   }
 ]
 ```
 
-Example of a `.atom/dictionaries.coffee` file
-```CoffeeScript:dictionaries.coffee
-module.exports = Dictionaries = [
+Example of a `.atom/dictionaries.js` file
+```JavaScript
+module.exports = Translators = [
   {
-    name: "Sample API"
-    canBeUsed: (from, to) -> from.code == 'en'
-    find: (text, from, to, succeeded, failed) ->
-      # Use an API, and invoke callback functions(succeeded or failed)
-      # Currently, translators and dictionaries are not
+    name: () => "Sample API",
+    canBeUsed: (from, to) => {
+      return from.code === 'en'
+    },
+    find: (text, from, to, succeeded, failed) => {
+      // Use an API, and invoke callback functions(succeeded or failed)
+      // Currently, translators and dictionaries are not
+    }
   }
 ]
 ```
