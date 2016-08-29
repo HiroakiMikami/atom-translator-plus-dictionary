@@ -1,6 +1,6 @@
 module.exports = Dictionaries = [
   {
-    name: () => "The name of Dictionary",
+    name: () => { return "The name of Dictionary" },
     canBeUsed: (from, to) => {
       /*
       Return true when this API can translate texts from ${from} to ${to}

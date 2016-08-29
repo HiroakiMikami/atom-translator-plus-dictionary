@@ -1,15 +1,10 @@
 module.exports = Translators = [
   {
-    name: () => { return "The name of Translator" },
+    name: () => { return "" },
     canBeUsed: (from, to) => {
-      /*
-      Return true when this API can translate texts from ${from} to ${to}
-      ${from} and ${to} are instances of Language class.
-      */
       return true
     },
     translate: (text, from, to, succeeded, failed) => {
-      // Translate ${text} from ${from} to ${to}
       try {
         succeeded("<b>Result</b>")
       } catch (error) {
