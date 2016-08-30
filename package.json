@@ -8,6 +8,11 @@
       "versions": {
         "^1.0.0": "consumeStatusBar"
       }
+    },
+    "user-support-helper": {
+      "versions": {
+        "^0.0.0": "consumeUserSupportHelper"
+      }
     }
   },
   "keywords": [
