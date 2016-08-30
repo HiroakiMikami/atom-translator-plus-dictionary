@@ -20,6 +20,9 @@
     "dictionary"
   ],
   "activationCommands": {
+    "body": [
+      "translator-plus-dictionary:configure"
+    ],
     "atom-text-editor": [
       "translator-plus-dictionary:translate",
       "translator-plus-dictionary:close-all"
