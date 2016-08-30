@@ -8,6 +8,11 @@
       "versions": {
         "^1.0.0": "consumeStatusBar"
       }
+    },
+    "user-support-helper": {
+      "versions": {
+        "^0.0.0": "consumeUserSupportHelper"
+      }
     }
   },
   "keywords": [
@@ -15,6 +20,9 @@
     "dictionary"
   ],
   "activationCommands": {
+    "body": [
+      "translator-plus-dictionary:configure"
+    ],
     "atom-text-editor": [
       "translator-plus-dictionary:translate",
       "translator-plus-dictionary:close-all"

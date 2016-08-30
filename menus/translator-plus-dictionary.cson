@@ -13,6 +13,10 @@
       'label': 'translator-plus-dictionary'
       'submenu': [
         {
+          'label': 'Configure'
+          'command': 'translator-plus-dictionary:configure'
+        }
+        {
           'label': 'Translate'
           'command': 'translator-plus-dictionary:translate'
         }
