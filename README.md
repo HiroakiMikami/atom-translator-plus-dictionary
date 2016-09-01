@@ -5,7 +5,7 @@ This package enables you to translate a text and consult a dictionary. Currently
 
 ## Usage
 ### Initial Settings
-Opens the configuration panel to do this initial settings if you install the [user-support-helper](https://github.com/HiroakiMikami/atom-user-support-helper) package.
+Opens the configuration panel to do this initial settings by using the `translator-plus-dictionary:configure` command.
 
 #### 1. Put your client ID and client secret of Microsoft Translator.
 First, put your id and secret of Microsoft Translator API to `Client ID of Microsoft Translator API` and `Client Secret of Microsoft Translator API` in the Settings view of this package.
@@ -22,8 +22,7 @@ I recommend to set your native language to the primary language, and to set "eng
 
 ### Commands
 #### `translator-plus-dictionary:configure`
-Opens the configuration panel if the [user-support-helper](https://github.com/HiroakiMikami/atom-user-support-helper) package is loaded.
-
+Opens the configuration panel.
 
 #### `translator-plus-dictionary:translate` (`Ctrl-c Ctrl-t` by default)
 Opens views, translate a selected text, and consult a dictionary. If no text is selected, this package uses a word that the cursor of Atom.io is positioned in.
