@@ -1,7 +1,7 @@
 {
   "name": "translator-plus-dictionary",
   "main": "./lib/main",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Translate a text and consult a dictionary",
   "consumedServices": {
     "status-bar": {
